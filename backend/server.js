@@ -7,12 +7,14 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-  origin: "*", // or set it to your frontend URL like "http://localhost:3000"
+  origin: ["http://localhost:3000", "https://your-deployed-frontend.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };
 
 app.use(cors(corsOptions));
+
+
 
 // Import Routes
 const expenseRoutes = require("./routes/expenseRoutes");

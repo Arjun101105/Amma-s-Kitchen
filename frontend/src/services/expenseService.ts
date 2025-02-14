@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Expense } from "../types/Expense";
-const API_BASE_URL = process.env.API_URL || "http://localhost:5000"; 
+const API_BASE_URL = "https://amma-s-kitchen-backend.vercel.app/"; 
 
 
 export const getExpenses = async (month?: number, year?: number): Promise<Expense[]> => {
