@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Sale } from "../types/Sale";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 if (!API_BASE_URL) {
   console.error("❌ API URL is undefined! Check .env file.");
@@ -12,13 +12,16 @@ if (!API_BASE_URL) {
 
 export const getSales = async (): Promise<Sale[]> => {
   try {
+    console.log("Fetching from:", `${API_BASE_URL}/api/sales`);
     const response = await axios.get(`${API_BASE_URL}/api/sales`);
+    console.log("Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching sales:", error);
     throw error;
   }
 };
+
 
 
 export const addSale = async (item: string, price: number, type: string) => {
