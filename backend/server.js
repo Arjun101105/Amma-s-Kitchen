@@ -16,9 +16,18 @@ app.use("/api/sales", saleRoutes);
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("MongoDB Connection Error:", err));
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err);
+    process.exit(1); // Exit if DB connection fails
+  });
 
-// Fix for Vercel: Export the app (instead of app.listen)
-module.exports = app;
+// Health Check Route
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+
+// Start the Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
