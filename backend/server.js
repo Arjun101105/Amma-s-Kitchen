@@ -11,8 +11,14 @@ app.use(cors());
 const expenseRoutes = require("./routes/expenseRoutes");
 const saleRoutes = require("./routes/saleRoutes");
 
+// Define Routes
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/sales", saleRoutes);
+
+// Health Check Route
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
 
 // Connect to MongoDB
 mongoose
@@ -20,14 +26,8 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err);
-    process.exit(1); // Exit if DB connection fails
+    process.exit(1);
   });
 
-// Health Check Route
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
-});
-
-// Start the Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// Export for Vercel (VERY IMPORTANT)
+module.exports = app;
