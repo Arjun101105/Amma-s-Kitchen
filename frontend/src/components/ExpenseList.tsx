@@ -33,10 +33,10 @@ const ExpensesList = () => {
     <Container className="mt-4">
       <Card className="p-4 shadow-sm">
         <Card.Body>
-          <Card.Title className="mb-3">Expenses</Card.Title>
+          <Card.Title className="mb-3 text-center">Expenses</Card.Title>
 
           <Row className="mb-3">
-            <Col md={6}>
+            <Col xs={12} md={6}>
               <Form.Group>
                 <Form.Label>Month</Form.Label>
                 <Form.Select value={month} onChange={(e) => setMonth(Number(e.target.value))}>
@@ -49,7 +49,7 @@ const ExpensesList = () => {
               </Form.Group>
             </Col>
 
-            <Col md={6}>
+            <Col xs={12} md={6}>
               <Form.Group>
                 <Form.Label>Year</Form.Label>
                 <Form.Control type="number" value={year} onChange={(e) => setYear(Number(e.target.value))} />
@@ -66,26 +66,29 @@ const ExpensesList = () => {
 
           {error && <Alert variant="danger">{error}</Alert>}
 
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Amount (₹)</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map((expense) => (
-                <tr key={expense._id}>
-                  <td>{expense.category}</td>
-                  <td>{expense.description}</td>
-                  <td>₹{expense.amount}</td>
-                  <td>{new Date(expense.date).toLocaleDateString()}</td>
+          {/* Responsive Table */}
+          <div className="table-responsive">
+            <Table striped bordered hover className="text-center">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Amount (₹)</th>
+                  <th>Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {expenses.map((expense) => (
+                  <tr key={expense._id}>
+                    <td>{expense.category}</td>
+                    <td>{expense.description}</td>
+                    <td>₹{expense.amount}</td>
+                    <td>{new Date(expense.date).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
         </Card.Body>
       </Card>
     </Container>
