@@ -2,11 +2,19 @@ const express = require("express");
 const router = express.Router();
 const Expense = require("../models/Expense");
 
+// Middleware to set CORS headers
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://ammas-kitchen.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 // Add Expense
 router.post("/", async (req, res) => {
   try {
     const { category, description, amount } = req.body;
-    const newExpense = new Expense({ category, description, amount });
+    const newExpense = new Expense({ category, description, amount, date: new Date() });
     await newExpense.save();
     res.json(newExpense);
   } catch (err) {
@@ -29,9 +37,9 @@ router.get("/", async (req, res) => {
       }
 
       const startDate = new Date(year, month - 1, 1); // First day of the month
-      const endDate = new Date(year, month, 0, 23, 59, 59); // Last day of the month
+      const endDate = new Date(year, month, 1); // First day of next month
 
-      const expenses = await Expense.find({ date: { $gte: startDate, $lte: endDate } }).sort({ date: -1 });
+      const expenses = await Expense.find({ date: { $gte: startDate, $lt: endDate } }).sort({ date: -1 });
       return res.json(expenses);
     }
 
