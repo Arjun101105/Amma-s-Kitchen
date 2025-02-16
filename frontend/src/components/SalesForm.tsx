@@ -6,14 +6,16 @@ const SalesForm = ({ onSaleAdded }: { onSaleAdded: () => void }) => {
   const [item, setItem] = useState("");
   const [price, setPrice] = useState(0);
   const [type, setType] = useState("parcel");
+  const [date, setDate] = useState(""); // New state for date
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addSale(item, price, type);
+      await addSale(item, price, type, date);
       setItem("");
       setPrice(0);
       setType("parcel");
+      setDate(""); // Reset date after submission
       onSaleAdded(); // Refresh the sales list
     } catch (error) {
       console.error("Error adding sale:", error);
@@ -54,6 +56,17 @@ const SalesForm = ({ onSaleAdded }: { onSaleAdded: () => void }) => {
                 <option value="parcel">Parcel</option>
                 <option value="counter">Counter</option>
               </Form.Select>
+            </Form.Group>
+
+            {/* 📅 New Date Picker Input */}
+            <Form.Group className="mb-3">
+              <Form.Label>Sale Date</Form.Label>
+              <Form.Control
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
             </Form.Group>
 
             <Button variant="primary" type="submit">

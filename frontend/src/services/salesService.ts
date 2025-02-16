@@ -24,11 +24,11 @@ export const getSales = async (): Promise<Sale[]> => {
 
 
 
-export const addSale = async (item: string, price: number, type: string) => {
-  console.log("Adding Sale:", { item, price, type });
+export const addSale = async (item: string, price: number, type: string, date: string) => {
+  console.log("Adding Sale:", { item, price, type, date });
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/sales`, { item, price, type });
+    const response = await axios.post(`${API_BASE_URL}/api/sales`, { item, price, type, date });
     console.log("Sale added successfully:", response.data);
     return response.data; // Return the new sale
   } catch (error: unknown) {
@@ -40,3 +40,4 @@ export const addSale = async (item: string, price: number, type: string) => {
     throw error;
   }
 };
+
