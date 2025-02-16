@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { getSales } from "../services/salesService";
 import { Sale } from "../types/Sale";
-import { Table, Container, Card } from "react-bootstrap";
+import { Table, Container, Card, Form } from "react-bootstrap";
 
 const SalesList = () => {
   const [sales, setSales] = useState<Sale[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
     fetchSales();
@@ -13,18 +14,36 @@ const SalesList = () => {
   const fetchSales = async () => {
     try {
       const data = await getSales();
-      console.log("Fetched sales data:", data);
       setSales(data);
     } catch (error) {
       console.error("Error fetching sales:", error);
     }
   };
 
+  // Filter sales based on selected date
+  const filteredSales = sales.filter((sale) => {
+    if (!selectedDate) return true; // If no date selected, show all sales
+
+    const saleDate = new Date(sale.date).toISOString().split("T")[0]; // Extract YYYY-MM-DD
+    return saleDate === selectedDate;
+  });
+
   return (
     <Container className="mt-4">
       <Card className="p-4 shadow-sm">
         <Card.Body>
           <Card.Title>Sales List</Card.Title>
+
+          {/* Date Filter Input */}
+          <Form.Group className="mb-3">
+            <Form.Label>Filter by Date</Form.Label>
+            <Form.Control
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+          </Form.Group>
+
           <Table striped bordered hover responsive>
             <thead>
               <tr>
@@ -35,9 +54,7 @@ const SalesList = () => {
               </tr>
             </thead>
             <tbody>
-              {sales.map((sale) => {
-                console.log("Sale Raw Date from API:", sale.date);
-
+              {filteredSales.map((sale) => {
                 let formattedDate = "N/A";
 
                 if (sale.date) {
